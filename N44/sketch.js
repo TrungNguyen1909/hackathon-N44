@@ -24,10 +24,12 @@ function setup()
 {
 	createCanvas(800,800)
 	var arr = Array(61);
+
 	for(let i=0;i<61;i++) arr[i] = i<15;
-	let cnt = 0;
-	shuffle(arr,true);
+	shuffle(arr,true); //random mine
+
 //	console.log(arr)
+	let cnt = 0;
 	boundL = size-1, boundR = 2*(size-1);
 	for (let i = 0; i <= 2*(size-1); i++)
 	{
@@ -41,12 +43,13 @@ function setup()
 		if (boundL > 0) boundL--;
 		else boundR--;
 	}
+
 	boundL = size-1, boundR = 2*(size-1);
 	for (let i = 0; i <= 2*(size-1); i++)
 	{
 		for (let j = boundL; j <= boundR; j++)
 		{
-			for (let k = 0; k < 6; k++)
+			for (let k = 0; k < 6; k++) // 6 huong
 			{
 				if (i+di[k] < 0 || i+di[k] > 2*(size-1) || j+dj[k] < boundL || j+dj[k] > boundR) continue;
 				if (mine[i][j])
@@ -54,7 +57,7 @@ function setup()
 					board[i][j] = -1;
 					continue;
 				}
-				board[i][j] += (mine[i+di[k]][j+dj[k]] == 1);
+				board[i][j] += (mine[i+di[k]][j+dj[k]] == 1); //update board[i][j]
 			}
 		}
 		if (boundL > 0) boundL--;
@@ -77,11 +80,13 @@ function draw()
 		for (let j = boundL; j <= boundR; j++, X += hexRad * sqrt(3))
 		{
 			if (board[i][j] != undefined)
-			fill(255);
-			polygon(X, Y,hexRad,6);
-			fill(0);
-//			text(mine[i][j]?1:0,X,Y)
-			text(board[i][j],X,Y);
+			{
+				fill(255);
+				polygon(X, Y,hexRad,6);
+				fill(0);
+	//			text(mine[i][j]?1:0,X,Y)
+				text(board[i][j],X,Y);
+			}
 		}
 		if (boundL > 0)
 		{
