@@ -109,7 +109,7 @@ function mouseClicked(){
 	let i = mouseX
 	let j = mouseY
 	console.log(i,j)
-	
+	if(isEqual(get(i,j).slice(0,3),[200,200,200])) return;
 	let mn = Infinity, pos = undefined
 	for(let x in m){
 		for(let y in m[x])
