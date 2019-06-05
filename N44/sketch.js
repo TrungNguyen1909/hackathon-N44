@@ -17,10 +17,7 @@ function polygon(x, y, radius, npoints) {
   }
   endShape(CLOSE);
 }
-/*
-function shuffle(array) {
-  array.sort(() => Math.random() - 0.5);
-}*/
+
 function setup()
 {
 	createCanvas(800,800)
@@ -181,13 +178,4 @@ function draw()
 			boundR--;
 		}
 	}
-	/*
-	for (let i = 0; i <= 2*(size-1); i++)
-	{
-		for (let j = 0; j <= 2*(size-1); j++)
-		{
-			text(board[i][j],j*50,i*50);
-		}
-	}
-	*/
 }
