@@ -1,74 +1,86 @@
-let table = [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0],
-		[0, 0, 0, 0]
-	],
-	l;
+let size = 5, boundL, boundR, hexRad = 20;
+let board = [], mine = [];
+let startX, startY;
+let number_of_mines = 10;
+const posX = 100, posY = 100;
 
-function poligon(x, y) {
-	let angle = TWO_PI / 6;
-	beginShape();
-	for (let i = 0; i < TWO_PI; i += angle) {
-		let sx = x + cos(i) * 30;
-		let sy = y + sin(i) * 30;
-		vertex(sx, sy);
-	}
-	endShape();
+function polygon(x, y, radius, npoints) {
+  let angle = TWO_PI / npoints;
+  beginShape();
+  for (let a = PI/6; a < TWO_PI+PI/6; a += angle) {
+    let sx = x + cos(a) * radius;
+    let sy = y + sin(a) * radius;
+    vertex(sx, sy);
+  }
+  endShape(CLOSE);
 }
-
-function setup() {
-	createCanvas(500, 500);
-	background(220);
-	layer1();
-}
-
-function layer1() {
-	let stx = 150,
-		cnt = 4,
-		tmp = 30 * sin(PI / 3),
-		cntr = 1;
-	for (let i = 100; i < 400; i += 45) {
-		for (let j = stx; j < stx + 2 * tmp * cnt; j += 2 * tmp) {
-			fill('white');
-			poligon(i, j);
-		}
-		if (cntr < 4) {
-			stx -= tmp;
-			cnt++;
-		} else {
-			stx += tmp;
-			cnt--;
-		}
-		cntr++;
-	}
-}
-
-/*function rand() {
-	for (let i = 0; i < 10; i++) {
-		let bx = random(0, 6),
-			by;
-		bx = round(bx);
-		if (bx == 0 || bx == 6) by = random(0, 3);
-		else if (bx == 1 || bx == 5) by = random(0, 4);
-		else if (bx == 2 || bx == 4) by = random(0, 5);
-		else if (bx == 3) by = random(0, 6);
-		by = round(by);
-		while (table[bx][by] == -1) {
-			bx = random(0, 6);
-			bx = round(bx);
-			if (bx == 0 || bx == 6) by = random(0, 3);
-			else if (bx == 1 || bx == 5) by = random(0, 4);
-			else if (bx == 2 || bx == 4) by = random(0, 5);
-			else if (bx == 3) by = random(0, 6);
-			by = round(by);
-		}
-		table[bx][by] = -1;
-	}
+/*
+function shuffle(array) {
+  array.sort(() => Math.random() - 0.5);
 }*/
-function draw() {
+function setup()
+{
+	createCanvas(800,800)
+	boundL = size-1, boundR = 2*(size-1);
+	var arr = Array(61);
+	for(let i=0;i<61;i++) arr[i] = i<15;
+	let cnt = 0;
+	shuffle(arr,true);
+	console.log(arr)
+	for (let i = 0; i <= 2*(size-1); i++)
+	{
+		board[i] = [];
+		mine[i] = [];
+		for (let j = boundL; j <= boundR; j++)
+		{
+			board[i][j] = 0;
+			mine[i][j] = arr[cnt++];
 
+		}
+		if (boundL > 0) boundL--;
+		else boundR--;
+	}
+}
+
+function draw()
+{
+	
+	background(200);
+	fill(255);
+	translate(300,100)
+	rotate(PI/6)
+	boundL = size-1, boundR = 2*(size-1);
+	startX = posX, startY = posY;
+	X = startX, Y = startY;
+	for (let i = 0; i <= 2*(size-1); i++, Y += hexRad * 3/2)
+	{
+		for (let j = boundL; j <= boundR; j++, X += hexRad * sqrt(3))
+		{
+			if (board[i][j] === 0)
+			polygon(X, Y,hexRad,6);
+			stroke('black')
+			text(mine[i][j]?1:0,X,Y)
+		}
+		if (boundL > 0)
+		{
+			X = startX - hexRad * sqrt(3)/2;
+			startX -= hexRad * sqrt(3)/2;
+			boundL--;
+		}
+		else
+		{
+			X = startX + hexRad * sqrt(3)/2;
+			startX += hexRad * sqrt(3)/2;
+			boundR--;
+		}
+	}
+	/*
+	for (let i = 0; i <= 2*(size-1); i++)
+	{
+		for (let j = 0; j <= 2*(size-1); j++)
+		{
+			text(board[i][j],j*50,i*50);
+		}
+	}
+	*/
 }
