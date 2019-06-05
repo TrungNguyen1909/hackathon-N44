@@ -6,6 +6,7 @@ let di = [0, -1, -1, 0, 1, 1];
 let dj = [-1, 0, 1, 1, 0, -1];
 const posX = 100, posY = 100;
 
+let m = new Array(800)
 function polygon(x, y, radius, npoints) {
   let angle = TWO_PI / npoints;
   beginShape();
@@ -23,6 +24,9 @@ function shuffle(array) {
 function setup()
 {
 	createCanvas(800,800)
+	for(let i=0;i<800;i++)
+	m[i] = new Array(800).fill(undefined)
+	// frameRate(1)
 	var arr = Array(61);
 
 	for(let i=0;i<61;i++) arr[i] = i<15;
@@ -63,40 +67,66 @@ function setup()
 		if (boundL > 0) boundL--;
 		else boundR--;
 	}
-}
-let isEqual = (a1,a2) => JSON.stringify(a1)===JSON.stringify(a2)
-function mouseClicked(){
-	console.log(mouseX,mouseY)
-	let i = mouseX
-	let j = mouseY
-	let q = []
-	let vis = new Array(800).fill(new Array(800).fill(0))
-	//console.log(vis)
-	q.push(new pos(i,j))
-	let mirror = 0
-	while(q.length){
-		let x,y;
-		let t = q.pop()
-		x = t.x
-		y = t.y
-		vis[x][y] = true
-		mirror = map[new pos(x,y)]
-		if(mirror!=undefined)
-		break
-		let di = [-1,1,0,0]
-		let dj = [0,0,1,-1]
-		for(let dx of di)
-			for(let dy of dj){
-				let nx = x +dx
-				let ny = y + dy
-				if(isEqual(get(nx,ny).slice(0,3),[255,255,255])&&!vis[nx][ny]){
-					q.push(new pos(nx,ny))
-				}
+	boundL = size-1, boundR = 2*(size-1);
+	startX = posX, startY = posY;
+	X = startX, Y = startY;
+	for (let i = 0; i <= 2*(size-1); i++, Y += hexRad * 3/2)
+	{
+		for (let j = boundL; j <= boundR; j++, X += hexRad * sqrt(3))
+		{
+			if (board[i][j] != undefined)
+			{
+				fill(255);
+				//polygon(round(X), round(Y),hexRad,6);
+				// console.log(X,Y)
+				// let s = new pos(round(X),round(Y))
+				// let b = new pos(i,j)
+				console.log(round(X),round(Y),i,j,board[i][j])
+				m[round(X)][round(Y)] = new pos(i,j)
+				fill(0);
+	//			text(mine[i][j]?1:0,X,Y)
+				text(board[i][j],X+300,Y);
+				
 			}
 		}
+		if (boundL > 0)
+		{
+			X = startX - hexRad * sqrt(3)/2;
+			startX -= hexRad * sqrt(3)/2;
+			boundL--;
+		}
+		else
+		{
+			X = startX + hexRad * sqrt(3)/2;
+			startX += hexRad * sqrt(3)/2;
+			boundR--;
+		}
+	}
+}
+let isEqual = (a1,a2) => JSON.stringify(a1)===JSON.stringify(a2)
+let distance = (p1, p2) => sqrt(sqr(p1.x-p2.x)+sqr(p1.y-p2.y))
+function mouseClicked(){
+	let i = mouseX
+	let j = mouseY
+	console.log(i,j)
+	
+	let mn = Infinity, pos = undefined
+	for(let x in m){
+		for(let y in m[x])
+		{
+			if (m[x][y] == undefined) continue;
+			if (mn > sqrt((i-x)*(i-x) + (j-y)*(j-y)))
+			{
+				mn = sqrt((i-x)*(i-x) + (j-y)*(j-y));
+				pos = m[x][y]
+			}
+		}
+	}
 	let x,y;
-	x = mirror.x
-	y = mirror.y
+	console.log(pos)
+	if(pos==undefined) return;
+	x = pos.x
+	y = pos.y
 	console.log(x,y)
 	console.log(board[x][y])
 
@@ -107,11 +137,12 @@ class pos{
 		this.y = y
 	}
 }
-let map = {}
 function draw()
 {
 	
 	background(200);
+	stroke('black')
+	text(str(mouseX)+' '+str(mouseY),10,10)
 	fill(255);
 //	translate(300,100)
 //	rotate(PI/6)
@@ -125,11 +156,16 @@ function draw()
 			if (board[i][j] != undefined)
 			{
 				fill(255);
-				polygon(X, Y,hexRad,6);
-				map[new pos(X,Y)] = new pos(i,j)
+				polygon(round(X), round(Y),hexRad,6);
+				// console.log(X,Y)
+				// let s = new pos(round(X),round(Y))
+				// let b = new pos(i,j)
+				// console.log(round(X),round(Y),i,j,board[i][j])
+				// m[round(X)][round(Y)] = [i,j]
 				fill(0);
 	//			text(mine[i][j]?1:0,X,Y)
 				text(board[i][j],X+300,Y);
+				
 			}
 		}
 		if (boundL > 0)
