@@ -1,0 +1,8 @@
+function bomb(x,y){
+  fill('red');
+  square(x-2,y-4,4);
+  circle(x,y+4,12);
+  line(x,y-4,x+4,y-10);
+  fill('yellow')
+  circle(x+4,y-10,2);
+}
