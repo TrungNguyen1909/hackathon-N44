@@ -64,7 +64,50 @@ function setup()
 		else boundR--;
 	}
 }
+let isEqual = (a1,a2) => JSON.stringify(a1)===JSON.stringify(a2)
+function mouseClicked(){
+	console.log(mouseX,mouseY)
+	let i = mouseX
+	let j = mouseY
+	let q = []
+	let vis = new Array(800).fill(new Array(800).fill(0))
+	//console.log(vis)
+	q.push(new pos(i,j))
+	let mirror = 0
+	while(q.length){
+		let x,y;
+		let t = q.pop()
+		x = t.x
+		y = t.y
+		vis[x][y] = true
+		mirror = map[new pos(x,y)]
+		if(mirror!=undefined)
+		break
+		let di = [-1,1,0,0]
+		let dj = [0,0,1,-1]
+		for(let dx of di)
+			for(let dy of dj){
+				let nx = x +dx
+				let ny = y + dy
+				if(isEqual(get(nx,ny).slice(0,3),[255,255,255])&&!vis[nx][ny]){
+					q.push(new pos(nx,ny))
+				}
+			}
+		}
+	let x,y;
+	x = mirror.x
+	y = mirror.y
+	console.log(x,y)
+	console.log(board[x][y])
 
+}
+class pos{
+	constructor(x,y){
+		this.x = x
+		this.y = y
+	}
+}
+let map = {}
 function draw()
 {
 	
@@ -83,9 +126,10 @@ function draw()
 			{
 				fill(255);
 				polygon(X, Y,hexRad,6);
+				map[new pos(X,Y)] = new pos(i,j)
 				fill(0);
 	//			text(mine[i][j]?1:0,X,Y)
-				text(board[i][j],X,Y);
+				text(board[i][j],X+300,Y);
 			}
 		}
 		if (boundL > 0)
