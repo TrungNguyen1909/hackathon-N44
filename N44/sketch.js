@@ -1,7 +1,7 @@
 let size = 5, boundL, boundR, hexRad = 20;
 let board = [], mine = [];
 let startX, startY;
-let number_of_mines = 10;
+let number_of_mines = 15;
 let di = [0, -1, -1, 0, 1, 1];
 let dj = [-1, 0, 1, 1, 0, -1];
 const posX = 100, posY = 100;
@@ -24,9 +24,9 @@ function setup()
 	for(let i=0;i<800;i++)
 	m[i] = new Array(800).fill(undefined)
 	// frameRate(1)
-	var arr = Array(61);
+	var arr = Array(3*size*(size-1)+1);
 
-	for(let i=0;i<61;i++) arr[i] = i<15;
+	for(let i=0;i<3*size*(size-1)+1;i++) arr[i] = i < number_of_mines;
 	shuffle(arr,true); //random mine
 
 //	console.log(arr)
