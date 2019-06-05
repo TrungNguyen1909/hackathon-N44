@@ -1,0 +1,7 @@
+function flag(x,y){
+  noStroke();
+  fill('red');
+  triangle(x,y-6,x,y+2,x+8,y-2);
+  stroke(5);
+  line(x,y-6,x,y+8);
+}
