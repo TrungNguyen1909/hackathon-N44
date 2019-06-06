@@ -179,3 +179,6 @@ function draw()
 		}
 	}
 }
+function rightClick(){
+	console.log("RIGHT CLICK!")
+}
