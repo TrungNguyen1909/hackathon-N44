@@ -4,7 +4,7 @@ let startX, startY;
 let number_of_mines = 15;
 let di = [0, -1, -1, 0, 1, 1];
 let dj = [-1, 0, 1, 1, 0, -1];
-let color = ['blue', 'red', 'green', 'purple', 'maroon', 'cyan'];
+let color = [0,'blue', 'red', 'green', 'purple', 'maroon', 'cyan'];
 let boundL = [], boundR = [];
 const posX = 100, posY = 100;
 let gameOver = false;
