@@ -1,10 +1,11 @@
-let size = 5, boundL, boundR, hexRad = 20;
+let size = 5, hexRad = 20;
 let board = [], mine = [];
 let startX, startY;
 let number_of_mines = 15;
 let di = [0, -1, -1, 0, 1, 1];
 let dj = [-1, 0, 1, 1, 0, -1];
 let color = ['blue','red','green', 'purple', 'maroon', 'cyan'];
+let boundL = [], boundR = [];
 const posX = 100, posY = 100;
 
 let m = new Array(800)
@@ -33,28 +34,36 @@ function setup()
 
 //	console.log(arr)
 	let cnt = 0;
-	boundL = size-1, boundR = 2*(size-1);
+	boundL[0] = size-1, boundR[0] = 2*(size-1);
 	for (let i = 0; i <= 2*(size-1); i++)
 	{
 		board[i] = [];
 		mine[i] = [];
-		for (let j = boundL; j <= boundR; j++)
+		for (let j = boundL[i]; j <= boundR[i]; j++)
 		{
 			board[i][j] = 0;
 			mine[i][j] = arr[cnt++];
 		}
-		if (boundL > 0) boundL--;
-		else boundR--;
+		if (boundL[i] > 0)
+		{
+			boundL[i+1] = boundL[i]-1;
+			boundR[i+1] = boundR[i];
+		}
+		else if (boundL[i] === 0)
+		{
+			boundL[i+1] = boundL[i];
+			boundR[i+1] = boundR[i]-1;
+		}
 	}
 
-	boundL = size-1, boundR = 2*(size-1);
+
 	for (let i = 0; i <= 2*(size-1); i++)
 	{
-		for (let j = boundL; j <= boundR; j++)
+		for (let j = boundL[i]; j <= boundR[i]; j++)
 		{
 			for (let k = 0; k < 6; k++) // 6 huong
 			{
-				if (i+di[k] < 0 || i+di[k] > 2*(size-1) || j+dj[k] < boundL || j+dj[k] > boundR) continue;//bug sieu to khong lo
+				if (i+di[k] < 0 || i+di[k] > 2*(size-1) || j+dj[k] < boundL[i+di[k]] || j+dj[k] > boundR[i+di[k]]) continue;//bug sieu to khong lo
 				if (mine[i][j])
 				{
 					board[i][j] = -1;
@@ -63,15 +72,13 @@ function setup()
 				board[i][j] += (mine[i+di[k]][j+dj[k]] == 1); //update board[i][j]
 			}
 		}
-		if (boundL > 0) boundL--;
-		else boundR--;
 	}
-	boundL = size-1, boundR = 2*(size-1);
+
 	startX = posX, startY = posY;
 	X = startX, Y = startY;
 	for (let i = 0; i <= 2*(size-1); i++, Y += hexRad * 3/2)
 	{
-		for (let j = boundL; j <= boundR; j++, X += hexRad * sqrt(3))
+		for (let j = boundL[i]; j <= boundR[i]; j++, X += hexRad * sqrt(3))
 		{
 			if (board[i][j] != undefined)
 			{
@@ -88,19 +95,18 @@ function setup()
 				
 			}
 		}
-		if (boundL > 0)
+		if (boundL[i] > 0)
 		{
 			X = startX - hexRad * sqrt(3)/2;
 			startX -= hexRad * sqrt(3)/2;
-			boundL--;
 		}
 		else
 		{
 			X = startX + hexRad * sqrt(3)/2;
 			startX += hexRad * sqrt(3)/2;
-			boundR--;
 		}
 	}
+	
 }
 let isEqual = (a1,a2) => JSON.stringify(a1)===JSON.stringify(a2)
 let distance = (p1, p2) => sqrt(sqr(p1.x-p2.x)+sqr(p1.y-p2.y))
@@ -117,10 +123,9 @@ function toggle(x, y)
 {
 	startX = posX, startY = posY;
 	X = startX, Y = startY;
-	boundL = size-1, boundR = 2*(size-1);
 	for (let i = 0; i <= 2*(size-1); i++, Y += hexRad * 3/2)
 	{
-		for (let j = boundL; j <= boundR; j++, X += hexRad * sqrt(3))
+		for (let j = boundL[i]; j <= boundR[i]; j++, X += hexRad * sqrt(3))
 		{
 			if (i == x && j == y)
 			{
@@ -132,7 +137,7 @@ function toggle(x, y)
 				}
 				else if (board[i][j] == 0)
 				{
-					floodfill(i,j,boundL,boundR);
+					floodfill(i,j,boundL[i],boundR[i]);
 				}
 				else
 				{
@@ -144,17 +149,15 @@ function toggle(x, y)
 				return;
 			}
 		}
-		if (boundL > 0)
+		if (boundL[i] > 0)
 		{
 			X = startX - hexRad * sqrt(3)/2;
 			startX -= hexRad * sqrt(3)/2;
-			boundL--;
 		}
 		else
 		{
 			X = startX + hexRad * sqrt(3)/2;
 			startX += hexRad * sqrt(3)/2;
-			boundR--;
 		}
 	}
 }
@@ -195,8 +198,8 @@ function draw()
 {
 	
 //	background(200);
-	stroke('black')
-	text(str(mouseX)+' '+str(mouseY),10,10)
+//	stroke('black')
+//	text(str(mouseX)+' '+str(mouseY),10,10)
 //	fill(255);
 //	translate(300,100)
 //	rotate(PI/6)
