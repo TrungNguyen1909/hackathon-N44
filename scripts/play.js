@@ -7,7 +7,7 @@ let di = [0, -1, -1, 0, 1, 1];
 let dj = [-1, 0, 1, 1, 0, -1];
 let color = [0,'blue', 'red', 'green', 'purple', 'maroon', 'cyan'];
 let boundL = [], boundR = [];
-const posX = 200, posY = 200;
+let posX = 200, posY = 200;
 let gameOver = false;
 let m = new Array(canvasSize)
 let visited = []
