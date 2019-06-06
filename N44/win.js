@@ -3,7 +3,6 @@ var fireworks = [];
 var gravity;
 
 function wininit() {
-  console.log('wininit();')
   createCanvas(800,600);
   stroke(255);
   strokeWeight(4);
