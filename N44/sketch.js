@@ -164,6 +164,7 @@ function toggle(x, y)
 function mouseClicked(){
 	let i = mouseX
 	let j = mouseY
+<<<<<<< Updated upstream
 	console.log(i,j)
 	if(isEqual(get(i,j).slice(0,3),[200,200,200])) return;
 	let mn = Infinity, pos = undefined
@@ -190,10 +191,60 @@ function mouseClicked(){
 }
 class pos{
 	constructor(x,y){
+=======
+	console.log(i, j)
+	if (isEqual(get(i, j).slice(0, 3), [200, 200, 200])) return;
+	let cent = findCenter(i, j)
+	let x, y;
+	console.log(cent)
+	if (cent == undefined) return;
+	[x, y] = cent;
+	console.log(x, y)
+	toggle(x, y);
+	//	console.log(board[x][y])
+	if(!gameOver)
+	winner = checkStatus();
+}
+let alldone = false;
+function Win(){
+	wininit();
+	alldone=true;
+}
+function Lose(){
+	console.log("Lose()")
+	alldone = true;
+	background('black')
+	textAlign(CENTER,CENTER)
+	fill('white')
+	text('YOU LOSE!',400,400)
+	text('"Mọi điều bạn không làm được đều có thể quy về nhân phẩm"',400,450)
+	text('- Vũ Minh Điềm 2019 -',500,500)
+}
+function rightClick() {
+	if(gameOver||winner) return;
+	console.log("RIGHT CLICK!")
+	let i = mouseX
+	let j = mouseY
+	let cent = findCenter(i, j)
+	if (cent == undefined) return;
+	let x, y;
+	[x, y] = cent;
+	let t = m[x][y];
+	i = t.x
+	j = t.y
+	flagged[i][j] = !flagged[i][j];
+	console.log(x, y)
+	winner = checkStatus()
+}
+
+class pos {
+	constructor(x, y) {
+>>>>>>> Stashed changes
 		this.x = x
 		this.y = y
 	}
 }
+<<<<<<< Updated upstream
 function draw()
 {
 	
@@ -205,6 +256,27 @@ function draw()
 //	rotate(PI/6)
 /*
 	boundL = size-1, boundR = 2*(size-1);
+=======
+function draw() {
+	if(winner){
+		if(!alldone) wininit();
+		alldone=true;
+		return draw = windraw;
+	}
+	if(gameOver){
+		if(!alldone){
+			alldone = true;
+			setTimeout(Lose,2000);			
+		}
+		else return;
+	}
+	background(200);
+	stroke('black')
+	//	text(str(mouseX)+' '+str(mouseY),10,10)
+	//	fill(255);
+	//	translate(300,100)
+	//	rotate(PI/6)
+>>>>>>> Stashed changes
 	startX = posX, startY = posY;
 	X = startX, Y = startY;
 	for (let i = 0; i <= 2*(size-1); i++, Y += hexRad * 3/2)
