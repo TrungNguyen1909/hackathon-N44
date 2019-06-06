@@ -148,18 +148,6 @@ function toggle2(i, j) {
 	}
 
 }
-<<<<<<< HEAD
-function mouseClicked(){
-	let i = mouseX
-	let j = mouseY
-<<<<<<< Updated upstream
-	console.log(i,j)
-	if(isEqual(get(i,j).slice(0,3),[200,200,200])) return;
-	let mn = Infinity, pos = undefined
-	for(let x in m){
-		for(let y in m[x])
-		{
-=======
 function toggle(X, Y) {
 	let i, j;
 	let t = m[X][Y];
@@ -172,7 +160,6 @@ function findCenter(i, j) {
 	let mn = Infinity, res = undefined
 	for (let x in m) {
 		for (let y in m[x]) {
->>>>>>> refs/remotes/origin/master
 			if (m[x][y] == undefined) continue;
 			if (mn > sqrt((i - x) * (i - x) + (j - y) * (j - y))) {
 				mn = sqrt((i - x) * (i - x) + (j - y) * (j - y));
@@ -200,40 +187,6 @@ function mouseClicked() {
 	winner = checkStatus();
 }
 let alldone = false;
-function Win(){
-	wininit();
-	alldone();
-}
-function Lose(){
-
-	alldone = true;
-	background('black')
-	textAlign(CENTER,CENTER)
-	fill('white')
-	text('YOU LOSE!',400,400)
-}
-<<<<<<< HEAD
-class pos{
-	constructor(x,y){
-=======
-	console.log(i, j)
-	if (isEqual(get(i, j).slice(0, 3), [200, 200, 200])) return;
-	let cent = findCenter(i, j)
-	let x, y;
-	console.log(cent)
-	if (cent == undefined) return;
-	[x, y] = cent;
-	console.log(x, y)
-	toggle(x, y);
-	//	console.log(board[x][y])
-	if(!gameOver)
-	winner = checkStatus();
-}
-let alldone = false;
-function Win(){
-	wininit();
-	alldone=true;
-}
 function Lose(){
 	console.log("Lose()")
 	alldone = true;
@@ -244,8 +197,6 @@ function Lose(){
 	text('"Mọi điều bạn không làm được đều có thể quy về nhân phẩm"',400,450)
 	text('- Vũ Minh Điềm 2019 -',500,500)
 }
-=======
->>>>>>> refs/remotes/origin/master
 function rightClick() {
 	if(gameOver||winner) return;
 	console.log("RIGHT CLICK!")
@@ -260,69 +211,29 @@ function rightClick() {
 	j = t.y
 	flagged[i][j] = !flagged[i][j];
 	console.log(x, y)
-<<<<<<< HEAD
 	winner = checkStatus()
-=======
->>>>>>> refs/remotes/origin/master
 }
 
 class pos {
 	constructor(x, y) {
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> refs/remotes/origin/master
 		this.x = x
 		this.y = y
 	}
-}
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-function draw()
-{
-	
-//	background(200);
-//	stroke('black')
-//	text(str(mouseX)+' '+str(mouseY),10,10)
-//	fill(255);
-//	translate(300,100)
-//	rotate(PI/6)
-/*
-	boundL = size-1, boundR = 2*(size-1);
-=======
-=======
->>>>>>> refs/remotes/origin/master
-function draw() {
+}function draw() {
 	if(winner){
 		if(!alldone) wininit();
 		alldone=true;
-<<<<<<< HEAD
 		return draw = windraw;
 	}
 	if(gameOver){
 		if(!alldone){
 			alldone = true;
 			setTimeout(Lose,2000);			
-=======
-		windraw();
-	}
-	if(gameOver){
-		if(!alldone){
-			alldone = true;			
->>>>>>> refs/remotes/origin/master
 		}
 		else return;
 	}
 	background(200);
 	stroke('black')
-	//	text(str(mouseX)+' '+str(mouseY),10,10)
-	//	fill(255);
-	//	translate(300,100)
-	//	rotate(PI/6)
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> refs/remotes/origin/master
 	startX = posX, startY = posY;
 	X = startX, Y = startY;
 	for (let i = 0; i <= 2 * (size - 1); i++ , Y += hexRad * 3 / 2) {
