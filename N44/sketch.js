@@ -12,7 +12,7 @@ let m = new Array(800)
 let visited = []
 let flagged = new Array(800)
 let opened = new Array(800)
-
+let winner = false;
 function flag(x, y) {
 	noStroke();
 	fill('red');
@@ -121,7 +121,7 @@ function floodfill(i, j) {
 	toggle2(i, j);
 	let cnt = 0;
 	for (let k = 0; k < 6; k++) {
-		if (i < 0 || i > 2 * (size - 1) || j < boundL[i] || j > boundR[i]) continue;
+		if (i+di[k] < 0 || i+di[k] > 2 * (size - 1) || j+dj[k] < boundL[i] || j+dj[k] > boundR[i]) continue;
 		cnt += flagged[i + di[k]][j + dj[k]];
 	}
 	if (cnt < board[i][j]) return;
@@ -170,7 +170,7 @@ function findCenter(i, j) {
 	return res
 }
 function mouseClicked() {
-	if(gameOver) return
+	if(gameOver||winner) return
 	let i = mouseX
 	let j = mouseY
 	console.log(i, j)
@@ -183,10 +183,24 @@ function mouseClicked() {
 	console.log(x, y)
 	toggle(x, y);
 	//	console.log(board[x][y])
+	if(!gameOver)
+	winner = checkStatus();
 }
+let alldone = false;
+function Win(){
+	wininit();
+	alldone();
+}
+function Lose(){
 
+	alldone = true;
+	background('black')
+	textAlign(CENTER,CENTER)
+	fill('white')
+	text('YOU LOSE!',400,400)
+}
 function rightClick() {
-	if(gameOver) return;
+	if(gameOver||winner) return;
 	console.log("RIGHT CLICK!")
 	let i = mouseX
 	let j = mouseY
@@ -208,7 +222,17 @@ class pos {
 	}
 }
 function draw() {
-	if (gameOver) return;
+	if(winner){
+		if(!alldone) wininit();
+		alldone=true;
+		windraw();
+	}
+	if(gameOver){
+		if(!alldone){
+			alldone = true;			
+		}
+		else return;
+	}
 	background(200);
 	stroke('black')
 	//	text(str(mouseX)+' '+str(mouseY),10,10)
@@ -227,14 +251,17 @@ function draw() {
 				// let b = new pos(i,j)
 				// console.log(round(X),round(Y),i,j,board[i][j])
 				// m[round(X)][round(Y)] = new pos(i,j)
-				if (opened[i][j]) {
+				if (opened[i][j]||gameOver) {
 					if (board[i][j] === -1) {
 						console.log("Game over!");
 						gameOver = true;
 						fill('red');
 						polygon(round(X), round(Y), hexRad, 6);
 					}
-					else if (board[i][j] === 0 && !visited[i][j]) {
+					else if (board[i][j] === 0) {
+						fill('grey');
+						polygon(round(X), round(Y), hexRad, 6);
+						if(!visited[i][j])
 						floodfill(i, j);
 					}
 					else if (board[i][j] >= 1) {
@@ -261,4 +288,34 @@ function draw() {
 			startX += hexRad * sqrt(3) / 2;
 		}
 	}
+}
+function checkStatus(){
+	if(gameOver) return false;
+	let fcnt = 0;
+	let wrong = 0;
+	let ocnt = 0;
+	for (let i = 0; i <= 2 * (size - 1); i++ , Y += hexRad * 3 / 2) {
+		for (let j = boundL[i]; j <= boundR[i]; j++ , X += hexRad * sqrt(3)) {
+			if (board[i][j] != undefined) {
+				if(flagged[i][j]){
+					if(board[i][j]==-1) fcnt+=1;
+					else wrong+=1;
+				}
+				else if(opened[i][j]) ocnt++;
+
+			}
+		}
+		if (boundL[i] > 0) {
+			X = startX - hexRad * sqrt(3) / 2;
+			startX -= hexRad * sqrt(3) / 2;
+		}
+		else {
+			X = startX + hexRad * sqrt(3) / 2;
+			startX += hexRad * sqrt(3) / 2;
+		}
+	}
+	if(wrong) return false;
+	if(fcnt==number_of_mines) return true;
+	if(ocnt==3*size*(size-1)+1-number_of_mines) return true;
+	return false;
 }
