@@ -273,6 +273,8 @@ class pos {
 						fill('grey');
 						polygon(round(X), round(Y), hexRad, 6);
 						fill(color[board[i][j]]);
+						textSize(20)
+						textAlign(CENTER,CENTER)
 						text(board[i][j], X, Y);
 					}
 				}
