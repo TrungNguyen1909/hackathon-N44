@@ -14,6 +14,8 @@ let visited = []
 let flagged = new Array(canvasSize)
 let opened = new Array(canvasSize)
 let winner = false;
+let first = true;
+let arr = Array()
 function flag(x, y) {
 	noStroke();
 	fill('red');
@@ -32,20 +34,8 @@ function polygon(x, y, radius, npoints) {
 	}
 	endShape(CLOSE);
 }
-
-function init() {
-	createCanvas(canvasSize, canvasSize)
-	background(200)
-	for (let i = 0; i < canvasSize; i++)
-		m[i] = new Array(canvasSize).fill(undefined)
-	for (let i = 0; i < canvasSize; i++)
-		flagged[i] = new Array(canvasSize).fill(false)
-	for (let i = 0; i < canvasSize; i++)
-		opened[i] = new Array(canvasSize).fill(false)
-	// frameRate(1)
-	var arr = Array(3 * size * (size - 1) + 1) // board size;
-	number_of_mines = 0.20*arr.length;
-
+function generate(){
+	arr.fill(0);
 	for (let i = 0; i < 3 * size * (size - 1) + 1; i++) arr[i] = i < number_of_mines;
 	shuffle(arr, true); //random mine
 
@@ -112,8 +102,21 @@ function init() {
 			startX += hexRad * sqrt(3) / 2;
 		}
 	}
-
-
+}
+function init() {
+	createCanvas(canvasSize, canvasSize)
+	background(200)
+	for (let i = 0; i < canvasSize; i++)
+		m[i] = new Array(canvasSize).fill(undefined)
+	// frameRate(1)
+	arr = Array(3 * size * (size - 1) + 1) // board size;
+	number_of_mines = Math.floor(0.20*arr.length);
+	generate()
+	for (let i = 0; i < board.length; i++)
+		flagged[i] = new Array(board[0].length).fill(false)
+	for (let i = 0; i < board.length; i++)
+		opened[i] = new Array(board[0].length).fill(false)
+	
 }
 let isEqual = (a1, a2) => JSON.stringify(a1) === JSON.stringify(a2)
 let distance = (p1, p2) => sqrt(sqr(p1.x - p2.x) + sqr(p1.y - p2.y))
@@ -132,6 +135,7 @@ function floodfill(i, j) {
 		floodfill(i + di[k], j + dj[k]);
 }
 function toggle2(i, j) {
+	first = false;
 	if (flagged[i][j] || opened[i][j]) return;
 	opened[i][j] = true;
 
@@ -159,6 +163,7 @@ function toggle(X, Y) {
 	console.log(t);
 	i = t.x
 	j = t.y
+	while(first&&board[i][j]!=0) generate()
 	toggle2(i, j);
 }
 function findCenter(i, j) {
@@ -230,7 +235,8 @@ class pos {
 		this.x = x
 		this.y = y
 	}
-}function Pdraw() {
+}
+function Pdraw() {
 	if(winner){
 		if(!alldone) wininit();
 		alldone=true;
