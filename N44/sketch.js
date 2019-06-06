@@ -170,6 +170,7 @@ function findCenter(i, j) {
 	return res
 }
 function mouseClicked() {
+	if(gameOver) return
 	let i = mouseX
 	let j = mouseY
 	console.log(i, j)
@@ -185,6 +186,7 @@ function mouseClicked() {
 }
 
 function rightClick() {
+	if(gameOver) return;
 	console.log("RIGHT CLICK!")
 	let i = mouseX
 	let j = mouseY
