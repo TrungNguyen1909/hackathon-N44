@@ -25,7 +25,7 @@ function getSetting() {
   sz = int(input.value());
   button.remove();
   input.remove();
-  if (sz >= 1 && sz <= 10) {
+  if (sz >= 3 && sz <= 10) {
     size = sz;
     clear();
     init();
