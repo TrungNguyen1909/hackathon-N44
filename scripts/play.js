@@ -1,4 +1,5 @@
 let size = 5, hexRad = 20;
+let canvasSize = 800
 let board = [], mine = [];
 let startX, startY;
 let number_of_mines = 15;
@@ -6,12 +7,12 @@ let di = [0, -1, -1, 0, 1, 1];
 let dj = [-1, 0, 1, 1, 0, -1];
 let color = [0,'blue', 'red', 'green', 'purple', 'maroon', 'cyan'];
 let boundL = [], boundR = [];
-const posX = 100, posY = 100;
+const posX = 200, posY = 200;
 let gameOver = false;
-let m = new Array(800)
+let m = new Array(canvasSize)
 let visited = []
-let flagged = new Array(800)
-let opened = new Array(800)
+let flagged = new Array(canvasSize)
+let opened = new Array(canvasSize)
 let winner = false;
 function flag(x, y) {
 	noStroke();
@@ -32,17 +33,18 @@ function polygon(x, y, radius, npoints) {
 	endShape(CLOSE);
 }
 
-function setup() {
-	createCanvas(800, 800)
+function init() {
+	createCanvas(canvasSize, canvasSize)
 	background(200)
-	for (let i = 0; i < 800; i++)
-		m[i] = new Array(800).fill(undefined)
-	for (let i = 0; i < 800; i++)
-		flagged[i] = new Array(800).fill(false)
-	for (let i = 0; i < 800; i++)
-		opened[i] = new Array(800).fill(false)
+	for (let i = 0; i < canvasSize; i++)
+		m[i] = new Array(canvasSize).fill(undefined)
+	for (let i = 0; i < canvasSize; i++)
+		flagged[i] = new Array(canvasSize).fill(false)
+	for (let i = 0; i < canvasSize; i++)
+		opened[i] = new Array(canvasSize).fill(false)
 	// frameRate(1)
 	var arr = Array(3 * size * (size - 1) + 1) // board size;
+	number_of_mines = 0.20*arr.length;
 
 	for (let i = 0; i < 3 * size * (size - 1) + 1; i++) arr[i] = i < number_of_mines;
 	shuffle(arr, true); //random mine
@@ -90,14 +92,14 @@ function setup() {
 			if (board[i][j] != undefined) {
 				fill(255);
 				polygon(round(X), round(Y), hexRad, 6);
-				// console.log(X,Y)
+				console.log(X,Y)
 				// let s = new pos(round(X),round(Y))
 				// let b = new pos(i,j)
-				console.log(round(X), round(Y), i, j, board[i][j])
+				//console.log(round(X), round(Y), i, j, board[i][j])
 				m[round(X)][round(Y)] = new pos(i, j)
 				fill(0);
 				//			text(mine[i][j]?1:0,X,Y)
-				text(board[i][j], X + 300, Y);
+				//text(board[i][j], X + 300, Y);
 
 			}
 		}
@@ -110,6 +112,7 @@ function setup() {
 			startX += hexRad * sqrt(3) / 2;
 		}
 	}
+
 
 }
 let isEqual = (a1, a2) => JSON.stringify(a1) === JSON.stringify(a2)
@@ -145,6 +148,8 @@ function toggle2(i, j) {
 		polygon(round(X), round(Y), hexRad, 6);
 		fill(color[board[i][j]]);
 		text(board[i][j], X, Y);
+		//if(!visited[i][j])
+		//floodfill(i,j)
 	}
 
 }
@@ -196,6 +201,12 @@ function Lose(){
 	text('YOU LOSE!',400,400)
 	text('"Mọi điều bạn không làm được đều có thể quy về nhân phẩm"',400,450)
 	text('- Vũ Minh Điềm 2019 -',500,500)
+	button = createButton('Try again')
+	button.position(400,600)
+	button.mousePressed(reload)
+}
+function reload(){
+	window.location.reload(false);
 }
 function rightClick() {
 	if(gameOver||winner) return;
@@ -219,7 +230,7 @@ class pos {
 		this.x = x
 		this.y = y
 	}
-}function draw() {
+}function Pdraw() {
 	if(winner){
 		if(!alldone) wininit();
 		alldone=true;
@@ -256,8 +267,7 @@ class pos {
 					else if (board[i][j] === 0) {
 						fill('grey');
 						polygon(round(X), round(Y), hexRad, 6);
-						if(!visited[i][j])
-						floodfill(i, j);
+						
 					}
 					else if (board[i][j] >= 1) {
 						fill('grey');
