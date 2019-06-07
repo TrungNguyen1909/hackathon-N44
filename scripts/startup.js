@@ -156,7 +156,7 @@ function draw() {
   else if (screen == 1) {
     customscreen();
   } else if (screen == 2) introscreen();
-  else if (screen == 3){
+  else if (screen == 3) {
     //Initailize play and transfer execution
     size = sz
     init()

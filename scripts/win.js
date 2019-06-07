@@ -4,8 +4,8 @@ var gravity;
 let button = undefined
 function wininit() {
   mouseClicked = wmouseClicked;
-  createCanvas(canvasSize,canvasSize);
-  
+  createCanvas(canvasSize, canvasSize);
+
   stroke(255);
   strokeWeight(4);
   colorMode(HSL);
@@ -13,12 +13,12 @@ function wininit() {
 
   fireworks.push(new Firework());
 }
-function wmouseClicked(){
+function wmouseClicked() {
   window.location.reload()
 }
 function windraw() {
   fill('white')
-  text('Click để chơi lại',400,700)
+  text('Click để chơi lại', 400, 700)
   colorMode(RGB);
   background(0, 25);
   if (random(1) < 0.1) {
@@ -52,7 +52,7 @@ function Particle(x, y, h, exploding) {
     this.vel.mult(random(2, 10));
   }
 
-  this.update = function() {
+  this.update = function () {
     if (!this.exploding) {
       this.vel.mult(0.9);
       this.lifespan -= 4;
@@ -62,11 +62,11 @@ function Particle(x, y, h, exploding) {
     this.acc.mult(0);
   }
 
-  this.applyForce = function(force) {
+  this.applyForce = function (force) {
     this.acc.add(force);
   }
 
-  this.show = function() {
+  this.show = function () {
     colorMode(HSL);
     if (!this.exploding) {
       strokeWeight(2);
@@ -78,7 +78,7 @@ function Particle(x, y, h, exploding) {
     point(this.loc.x, this.loc.y);
   }
 
-  this.done = function() {
+  this.done = function () {
     if (this.lifespan < 0) {
       return true;
     } else {
@@ -92,7 +92,7 @@ function Firework() {
   this.exploded = false;
   this.particles = [];
 
-  this.update = function() {
+  this.update = function () {
     if (!this.exploded) {
       this.firework.applyForce(gravity);
       this.firework.update();
@@ -112,7 +112,7 @@ function Firework() {
     }
   }
 
-  this.done = function() {
+  this.done = function () {
     if (this.exploded && this.particles.length === 0) {
       return true;
     } else {
@@ -120,7 +120,7 @@ function Firework() {
     }
   }
 
-  this.explode = function() {
+  this.explode = function () {
     for (var i = 0; i < 100; i++) {
 
       //var x = 16 * pow(sin(i),3);
@@ -130,7 +130,7 @@ function Firework() {
     }
   }
 
-  this.show = function() {
+  this.show = function () {
     if (!this.exploded) {
       this.firework.show();
     }
