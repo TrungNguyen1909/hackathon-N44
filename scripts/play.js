@@ -27,7 +27,7 @@ function flag(x, y) { //function to draw a flag at (x,y)
 	line(x, y - 6, x, y + 8);
 }
 
-function polygon(x, y, radius, npoints) { //function to draw a polygon with n points at (x,y) with radius
+function polygon(x, y, radius, npoints) { //function to draw a regular polygon with n points at (x,y) with radius
 	let angle = TWO_PI / npoints;
 	beginShape();
 	for (let a = PI / 6; a < TWO_PI + PI / 6; a += angle) {
@@ -148,8 +148,6 @@ function toggle2(i, j) { //function to run when a hex when a hex is opened
 		polygon(round(X), round(Y), hexRad, 6);
 		fill(color[board[i][j]]);
 		text(board[i][j], X, Y);
-		//if(!visited[i][j])
-		//floodfill(i,j)
 	}
 
 }
@@ -212,7 +210,6 @@ function reload() { //function for play again button
 }
 function rightClick() { //function for right click
 	if (gameOver || winner) return;
-	//	console.log("RIGHT CLICK!")
 	let i = mouseX
 	let j = mouseY
 	let cent = findCenter(i, j)
@@ -318,8 +315,8 @@ function checkStatus() { //function to check if win or lose
 	let fcnt = 0;
 	let wrong = 0;
 	let ocnt = 0;
-	for (let i = 0; i <= 2 * (size - 1); i++ , Y += hexRad * 3 / 2) {
-		for (let j = boundL[i]; j <= boundR[i]; j++ , X += hexRad * sqrt(3)) {
+	for (let i = 0; i <= 2 * (size - 1); i++) {
+		for (let j = boundL[i]; j <= boundR[i]; j++s) {
 			if (board[i][j] != undefined) {
 				if (flagged[i][j]) {
 					if (board[i][j] == -1) fcnt += 1;//a flag at a correct position
@@ -328,14 +325,6 @@ function checkStatus() { //function to check if win or lose
 				else if (opened[i][j]) ocnt++;
 
 			}
-		}
-		if (boundL[i] > 0) {
-			X = startX - hexRad * sqrt(3) / 2;
-			startX -= hexRad * sqrt(3) / 2;
-		}
-		else {
-			X = startX + hexRad * sqrt(3) / 2;
-			startX += hexRad * sqrt(3) / 2;
 		}
 	}
 	if (wrong) return false;//The player may have think a normal hexagons as a mine.
