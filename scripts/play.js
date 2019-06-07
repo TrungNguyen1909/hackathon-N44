@@ -17,6 +17,8 @@ let winner = false;
 let first = true;
 let arr = Array()
 let cnt_flag = 0;
+let time = 0
+let timeID = 0
 function flag(x, y) {
 	noStroke();
 	fill('red');
@@ -165,6 +167,7 @@ function toggle(X, Y) {
 	i = t.x
 	j = t.y
 	while(first&&board[i][j]!=0) generate()
+	timeID = setInterval(()=>{time+=1},1000)
 	toggle2(i, j);
 }
 function findCenter(i, j) {
@@ -207,7 +210,7 @@ function Lose(){
 	text('YOU LOSE!',400,400)
 	text('"Mọi điều bạn không làm được đều có thể quy về nhân phẩm"',400,450)
 	text('- Vũ Minh Điềm 2019 -',500,500)
-	button = createButton('Try again')
+	button = createButton('Chơi lại')
 	button.position(400,600)
 	button.mousePressed(reload)
 }
@@ -243,6 +246,7 @@ class pos {
 	}
 }
 function Pdraw() {
+	if(winner||gameOver) clearInterval(timeID)
 	if(winner){
 		if(!alldone) wininit();
 		alldone=true;
@@ -307,6 +311,7 @@ function Pdraw() {
 		strokeWeight(0)
 		textSize(18)
 		text(number_of_mines_left,posX,posY - 50);
+		text(nf(Math.floor(time/60),2)+' : '+nf(time%60,2),posX+200,posY - 50);
 		strokeWeight(1)
 		if (boundL[i] > 0) {
 			X = startX - hexRad * sqrt(3) / 2;
