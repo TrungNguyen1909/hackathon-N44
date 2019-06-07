@@ -299,7 +299,7 @@ function Pdraw() {
 		}
 		//fill
 
-		console.log(posY);
+		// console.log(posY);
 		let number_of_mines_left = number_of_mines - cnt_flag;
 		flag(posX-20,posY-60);
 		fill(0);
