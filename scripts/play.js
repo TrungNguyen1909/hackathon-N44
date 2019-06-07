@@ -5,7 +5,7 @@ let startX, startY;
 let number_of_mines = 15;
 let di = [0, -1, -1, 0, 1, 1];
 let dj = [-1, 0, 1, 1, 0, -1];
-let color = [0,'blue', 'red', 'green', 'purple', 'maroon', 'cyan'];
+let color = [0,'#5EA1CC', 'red', 'green', 'purple', 'maroon', 'cyan'];
 let boundL = [], boundR = [];
 let posX = 200, posY = 200;
 let gameOver = false;

@@ -1,15 +1,24 @@
 let input, button, screen = 0;
 let sz;
-
+var font
+function preload(){
+  // font = loadFont("assets/iCielBCDowntown-Regular.otf")
+  font = loadFont("assets/iCiel SamsungSharpSans-Bold-UTF8.ttf")
+  
+}
+function enableFont(){
+  textFont(font,16);
+}
 function setup() {
   createCanvas(400, 400);
+  enableFont()
   background(220);
   startscreen();
-  textSize(15);
-  text("Welcome to the hexagon minesweeper",80,120)
-  text("Click to open a hexagon",80,140)
-  text("Right-click to flag a hexagon",80,160)
-  text("ENTER HEXAGON'S EDGE LENGTH: ", 80, 180);
+  //textSize(15);
+  text("Welcome to the hexagon minesweeper",40,120)
+  text("Click to open a hexagon",40,140)
+  text("Right-click to flag a hexagon",40,160)
+  text("ENTER HEXAGON'S EDGE LENGTH: ", 40, 180);
 }
 
 function startscreen() {
