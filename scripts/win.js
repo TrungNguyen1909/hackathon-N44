@@ -3,7 +3,7 @@ var fireworks = [];
 var gravity;
 let button = undefined
 function wininit() {
-  createCanvas(800,600);
+  createCanvas(canvasSize,canvasSize);
   stroke(255);
   strokeWeight(4);
   colorMode(HSL);
