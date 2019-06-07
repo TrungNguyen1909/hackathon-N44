@@ -304,7 +304,10 @@ function Pdraw() {
 		flag(posX-20,posY-60);
 		fill(0);
 		textSize(hexRad);
+		strokeWeight(0)
+		textSize(18)
 		text(number_of_mines_left,posX,posY - 50);
+		strokeWeight(1)
 		if (boundL[i] > 0) {
 			X = startX - hexRad * sqrt(3) / 2;
 			startX -= hexRad * sqrt(3) / 2;

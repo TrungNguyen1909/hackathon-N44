@@ -15,10 +15,11 @@ function setup() {
   background(220);
   startscreen();
   //textSize(15);
-  text("Welcome to the hexagon minesweeper",40,120)
-  text("Click to open a hexagon",40,140)
-  text("Right-click to flag a hexagon",40,160)
-  text("ENTER HEXAGON'S EDGE LENGTH: ", 40, 180);
+  textAlign(CENTER,CENTER)
+  text("Chào mừng đến với trò chơi dò mìn lục giác",200,120)
+  text("Click để mở 1 hình lục giác.",200,140)
+  text("Click phải để cắm cờ vào hình lục giác đó",200,160)
+  text("Nhập độ dài cạnh của lục giác: ", 200, 180);
 }
 
 function startscreen() {
@@ -43,9 +44,9 @@ function getSetting() {
   }
   else{
     startscreen();
-    textSize(15);
-    fill('red');
-    text("INVALID SIZE, PLEASE RE-ENTER", 90, 180);
+    textSize(15)
+    fill('red')
+    text("Độ dài không hợp lệ. Vui lòng nhập lại", 200, 180);
   }
 }
 
