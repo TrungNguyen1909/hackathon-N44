@@ -152,6 +152,7 @@ function toggle2(i, j) { //function to run when a hex when a hex is opened
 	opened[i][j] = true;
 
 	if (board[i][j] === -1) { //clicked at a mine
+		gameOver = true;
 		fill('red');
 		polygon(round(X), round(Y), hexRad, 6);
 	}
@@ -400,7 +401,13 @@ function checkStatus() { //function to check if win or lose
 					if (board[i][j] == -1) fcnt += 1;//a flag at a correct position
 					else wrong += 1;//a flag at a wrong position
 				}
-				else if (opened[i][j]) ocnt++;
+				else if (opened[i][j]) {
+					ocnt++;
+					if (board[i][j] == -1) {
+						gameOver = 1;
+						return false;
+					}
+				}
 
 			}
 		}
