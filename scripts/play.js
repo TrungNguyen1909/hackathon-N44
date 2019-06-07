@@ -316,7 +316,7 @@ function checkStatus() { //function to check if win or lose
 	let wrong = 0;
 	let ocnt = 0;
 	for (let i = 0; i <= 2 * (size - 1); i++) {
-		for (let j = boundL[i]; j <= boundR[i]; j++s) {
+		for (let j = boundL[i]; j <= boundR[i]; j++) {
 			if (board[i][j] != undefined) {
 				if (flagged[i][j]) {
 					if (board[i][j] == -1) fcnt += 1;//a flag at a correct position

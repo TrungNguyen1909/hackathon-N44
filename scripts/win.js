@@ -1,7 +1,7 @@
 "use strict";
 var fireworks = [];
 var gravity;
-
+let button = undefined
 function wininit() {
   createCanvas(800,600);
   stroke(255);
