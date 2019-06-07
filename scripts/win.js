@@ -3,20 +3,22 @@ var fireworks = [];
 var gravity;
 let button = undefined
 function wininit() {
+  mouseClicked = wmouseClicked;
   createCanvas(canvasSize,canvasSize);
+  
   stroke(255);
   strokeWeight(4);
   colorMode(HSL);
-
   gravity = createVector(0, 0.1);
 
   fireworks.push(new Firework());
-  button = createButton('Chơi lại')
-	button.position(400,600)
-	button.mousePressed(reload)
 }
-
+function wmouseClicked(){
+  window.location.reload()
+}
 function windraw() {
+  fill('white')
+  text('Click để chơi lại',400,700)
   colorMode(RGB);
   background(0, 25);
   if (random(1) < 0.1) {

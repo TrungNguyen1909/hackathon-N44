@@ -201,9 +201,8 @@ function Lose() { //function that draw stuff when a mine is opened.
 	text('YOU LOSE!', 400, 400)
 	text('"Mọi điều bạn không làm được đều có thể quy về nhân phẩm"', 400, 450)
 	text('- Vũ Minh Điềm 2019 -', 500, 500)
-	button = createButton('Chơi lại')
-	button.position(400, 600)
-	button.mousePressed(reload)
+	text('Click để chơi lại',400,700)
+	mouseClicked = reload
 }
 function reload() { //function for play again button
 	window.location.reload(false);// reload the game.
