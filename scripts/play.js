@@ -7,7 +7,7 @@ let di = [0, -1, -1, 0, 1, 1];
 let dj = [-1, 0, 1, 1, 0, -1];
 let color = [0,'blue', 'red', 'green', 'purple', 'maroon', 'cyan'];
 let boundL = [], boundR = [];
-let posX = 200, posY = 200;
+let posX, posY;
 let gameOver = false;
 let m = new Array(canvasSize)
 let visited = []
@@ -16,6 +16,7 @@ let opened = new Array(canvasSize)
 let winner = false;
 let first = true;
 let arr = Array()
+let cnt_flag = 0;
 function flag(x, y) {
 	noStroke();
 	fill('red');
@@ -225,6 +226,10 @@ function rightClick() {
 	let t = m[x][y];
 	i = t.x
 	j = t.y
+	if (!flagged[i][j])
+		cnt_flag++;
+	else
+		cnt_flag--;
 	flagged[i][j] = !flagged[i][j];
 	console.log(x, y)
 	winner = checkStatus()
@@ -284,14 +289,21 @@ function Pdraw() {
 						text(board[i][j], X, Y);
 					}
 				}
-				else if (flagged[i][j]) flag(X, Y);
+				else if (flagged[i][j])
+				{
+					flag(X, Y);
+				}
 				fill(0);
-
-				//			text(mine[i][j]?1:0,X,Y)
-				// text(board[i][j],X+300,Y);
-
 			}
 		}
+		//fill
+
+		console.log(posY);
+		let number_of_mines_left = number_of_mines - cnt_flag;
+		flag(posX-20,posY-60);
+		fill(0);
+		textSize(hexRad);
+		text(number_of_mines_left,posX,posY - 50);
 		if (boundL[i] > 0) {
 			X = startX - hexRad * sqrt(3) / 2;
 			startX -= hexRad * sqrt(3) / 2;
