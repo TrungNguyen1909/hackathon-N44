@@ -158,9 +158,9 @@ function draw() {
   } else if (screen == 2) introscreen();
   else if (screen == 3) {
     //Initailize play and transfer execution
-    size = sz
-    init()
-    mouseClicked = PmouseClicked
+    size = sz;
+    init();
+    mouseClicked = PmouseClicked;
     return draw = Pdraw;
   }
 }

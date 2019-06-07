@@ -1,7 +1,7 @@
 "use strict";
 var fireworks = [];
 var gravity;
-let button = undefined
+let button = undefined;
 function wininit() {
   mouseClicked = wmouseClicked;
   createCanvas(canvasSize, canvasSize);
@@ -14,11 +14,11 @@ function wininit() {
   fireworks.push(new Firework());
 }
 function wmouseClicked() {
-  window.location.reload()
+  window.location.reload();
 }
 function windraw() {
-  fill('white')
-  text('Click để chơi lại', 400, 700)
+  fill('white');
+  text('Click để chơi lại', 400, 700);
   colorMode(RGB);
   background(0, 25);
   if (random(1) < 0.1) {
