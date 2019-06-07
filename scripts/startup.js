@@ -1,7 +1,7 @@
 let screen = 0,
   font, input;
 let numco = ['black', 'purple', 'blue', 'cyan', 'green', 'yellow', 'orange', 'red'];
-let sz = 5;
+let sz = 3;
 
 function setup() {
   createCanvas(800, 800);
@@ -53,12 +53,10 @@ function startscreen0() {
 function customscreen() {
   textSize(16);
   fill('black');
-  text('Click vào số để thay đổi độ dài.', 270, 250);
   text('Độ dài bạn chọn là:', 270, 270);
-  textSize(25);
+  textSize(35);
   fill(numco[sz - 3]);
   text(sz, 390, 330);
-  textSize(18);
   if (mouseX >= 470 && mouseX <= 530 && mouseY >= 388 && mouseY <= 413) {
     fill('yellow');
     rect(470, 388, 60, 25);
@@ -73,9 +71,30 @@ function customscreen() {
     noFill();
     rect(240, 388, 60, 25);
   }
+  if (mouseX >= 275 && mouseX <= 305 && mouseY >= 318 && mouseY <= 348) {
+    fill('yellow');
+    square(275, 318, 30);
+  } else {
+    noFill();
+    square(275, 318, 30);
+  }
+  if (mouseX >= 465 && mouseX <= 495 && mouseY >= 318 && mouseY <= 348) {
+    fill('yellow');
+    square(465, 318, 30);
+  } else {
+    noFill();
+    square(465, 318, 30);
+  }
   fill('black');
+  textSize(18);
   text('PLAY', 500, 400);
   text('BACK', 270, 400);
+  textSize(25);
+  text('-', 290, 330);
+  text('+', 480, 332);
+  //noFill();
+  //square(275,318,30);
+  //square(465,318,30);
 }
 
 function introscreen() {
@@ -121,9 +140,12 @@ function mouseClicked() {
       screen = 0;
     } else if (mouseX >= 470 && mouseX <= 530 && mouseY >= 388 && mouseY <= 413) {
       screen = 3;
-    } else if (mouseX >= 385 && mouseX <= 395 && mouseY >= 322 && mouseY <= 342) {
+    } else if (mouseX >= 465 && mouseX <= 495 && mouseY >= 318 && mouseY <= 348) {
       sz++;
       if (sz > 10) sz = 3;
+    } else if (mouseX >= 275 && mouseX <= 305 && mouseY >= 318 && mouseY <= 348) {
+      sz--;
+      if (sz < 3) sz = 10;
     }
   }
 }
