@@ -1,7 +1,7 @@
 let screen = 0,
   font, input;
 let numco = ['black', 'purple', 'blue', 'cyan', 'green', 'yellow', 'orange', 'red'];
-let sz = 3;
+let sz = 4;
 let stage = 0;
 function setup() {
   createCanvas(800, 800);
@@ -143,10 +143,10 @@ function mouseClicked() {
       screen = 3;
     } else if (mouseX >= 465 && mouseX <= 495 && mouseY >= 318 && mouseY <= 348) {
       sz++;
-      if (sz > 10) sz = 3;
+      if (sz > 10) sz = 4;
     } else if (mouseX >= 275 && mouseX <= 305 && mouseY >= 318 && mouseY <= 348) {
       sz--;
-      if (sz < 3) sz = 10;
+      if (sz < 4) sz = 10;
     }
   }
 }
