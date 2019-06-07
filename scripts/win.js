@@ -1,7 +1,7 @@
 "use strict";
 var fireworks = [];
 var gravity;
-
+let button = undefined
 function wininit() {
   createCanvas(800,600);
   stroke(255);
@@ -11,6 +11,9 @@ function wininit() {
   gravity = createVector(0, 0.1);
 
   fireworks.push(new Firework());
+  button = createButton('Chơi lại')
+	button.position(400,600)
+	button.mousePressed(reload)
 }
 
 function windraw() {
