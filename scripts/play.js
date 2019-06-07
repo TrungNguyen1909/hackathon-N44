@@ -119,14 +119,11 @@ function floodfill(i, j) { //function for when clicked at (board[i][j] === 0)
 	if (i < 0 || i > 2 * (size - 1) || j < boundL[i] || j > boundR[i] || visited[i][j] || flagged[i][j]) return; //return if OOB or already visited
 	visited[i][j] = 1;
 	toggle2(i, j);
-	let cnt = 0;
+	if (board[i][j] != 0) return;
 	for (let k = 0; k < 6; k++) {
 		if (i + di[k] < 0 || i + di[k] > 2 * (size - 1) || j + dj[k] < boundL[i] || j + dj[k] > boundR[i]) continue;
-		cnt += flagged[i + di[k]][j + dj[k]];
-	}
-	if (cnt < board[i][j]) return; //i
-	for (let k = 0; k < 6; k++)
 		floodfill(i + di[k], j + dj[k]);
+	}
 }
 function toggle2(i, j) { //function to run when a hex when a hex is opened
 	first = false;
@@ -134,7 +131,6 @@ function toggle2(i, j) { //function to run when a hex when a hex is opened
 	opened[i][j] = true;
 
 	if (board[i][j] === -1) { //clicked at a mine
-		console.log("Game over!");
 		fill('red');
 		polygon(round(X), round(Y), hexRad, 6);
 	}
@@ -172,7 +168,7 @@ function findCenter(i, j) { //function to find the nearest hex center to mouse
 	}
 	return res;
 }
-function PmouseClicked() { //function for left click
+function PmouseClicked(event) { //function for left click
 	if (gameOver || winner) return;// Don't respond after the game is over.
 	let i = mouseX;
 	let j = mouseY;
@@ -254,7 +250,6 @@ function Pdraw() { //function that is responsible for drawing while in-game.
 
 				if (opened[i][j] || gameOver) {//We want to show the content of a hexagons when it's opened or when the game is over.
 					if (board[i][j] === -1) {//a mine
-						console.log("Game over!");
 						gameOver = true;
 						fill('red');
 						polygon(round(X), round(Y), hexRad, 6);
