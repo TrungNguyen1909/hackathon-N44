@@ -11,6 +11,8 @@ let posX, posY; //starting position for board
 let gameOver = false;
 let m = new Array(canvasSize);
 let visited = [];
+let isPeaking = [];
+let peaked = [];
 let flagged = new Array(canvasSize);
 let opened = new Array(canvasSize);
 let winner = false;
@@ -19,6 +21,7 @@ let arr = Array();
 let cnt_flag = 0;
 let time = 0;
 let timeID = 0;
+let isPS = false;
 function flag(x, y) { //function to draw a flag at (x,y)
 	noStroke();
 	fill('red');
@@ -98,6 +101,7 @@ function generate() { //function to generate board with mines
 	}
 }
 function init() { //setup function. this one should be called before the draw() function is overriden
+	stage = 1;
 	createCanvas(canvasSize, canvasSize);
 	background(200);
 	for (let i = 0; i < canvasSize; i++)
@@ -111,6 +115,8 @@ function init() { //setup function. this one should be called before the draw() 
 		flagged[i] = new Array(board[0].length).fill(false);
 	for (let i = 0; i < board.length; i++)
 		opened[i] = new Array(board[0].length).fill(false);
+	for (let i = 0; i < board.length; i++)
+		isPeaking[i] = new Array(board[0].length).fill(false);
 
 }
 let isEqual = (a1, a2) => JSON.stringify(a1) === JSON.stringify(a2);
@@ -121,8 +127,22 @@ function floodfill(i, j) { //function for when clicked at (board[i][j] === 0)
 	toggle2(i, j);
 	if (board[i][j] != 0) return;
 	for (let k = 0; k < 6; k++) {
-		if (i + di[k] < 0 || i + di[k] > 2 * (size - 1) || j + dj[k] < boundL[i] || j + dj[k] > boundR[i]) continue;
+		if (i + di[k] < 0 || i + di[k] > 2 * (size - 1) || j + dj[k] < boundL[i + di[k]] || j + dj[k] > boundR[i + di[k]]) continue;//bug sieu to khong lo
 		floodfill(i + di[k], j + dj[k]);
+	}
+}
+function wetFloodfill(i, j) { //function for when release a primary+second click
+	if (i < 0 || i > 2 * (size - 1) || j < boundL[i] || j > boundR[i] || flagged[i][j] || !opened[i][j]) return; //return if OOB or already visited
+	visited[i][j] = 1;
+	let cnt = 0;
+	for (let k = 0; k < 6; k++) {
+		if (i + di[k] < 0 || i + di[k] > 2 * (size - 1) || j + dj[k] < boundL[i + di[k]] || j + dj[k] > boundR[i + di[k]]) continue;//bug sieu to khong lo
+		cnt += flagged[i + di[k]][j + dj[k]]
+	}
+	if (cnt < board[i][j]) return;
+	for (let k = 0; k < 6; k++) {
+		if (i + di[k] < 0 || i + di[k] > 2 * (size - 1) || j + dj[k] < boundL[i + di[k]] || j + dj[k] > boundR[i + di[k]] || flagged[i + di[k]][j + dj[k]]) continue;//bug sieu to khong lo
+		toggle2(i + di[k], j + dj[k]);
 	}
 }
 function toggle2(i, j) { //function to run when a hex when a hex is opened
@@ -168,7 +188,67 @@ function findCenter(i, j) { //function to find the nearest hex center to mouse
 	}
 	return res;
 }
+function unPeak() {
+	while (peaked.length) {
+		let p = peaked.pop();
+		let i, j;
+		[i, j] = p;
+		isPeaking[i][j] = false;
+	}
+}
+function peakXY(mouseX, mouseY) {
+	unPeak();
+	let x, y;
+	[x, y] = findCenter(mouseX, mouseY)
+	let i, j;
+	let t = m[x][y]
+	i = t.x
+	j = t.y
+	for (let k = 0; k < 6; k++) {
+		if (i + di[k] < 0 || i + di[k] > 2 * (size - 1) || j + dj[k] < boundL[i + di[k]] || j + dj[k] > boundR[i + di[k]]) continue;//bug sieu to khong lo
+		peaked.push([i + di[k], j + dj[k]]);
+		isPeaking[i + di[k]][j + dj[k]] = true;
+	}
+}
+function mousePressed(event) {
+	console.log('mouse pressed:' + event.buttons)
+	if (stage != 1) return;
+	if (event.buttons == 3) {
+		let i = mouseX;
+		let j = mouseY;
+		isPS = true;
+		if (isEqual(get(i, j).slice(0, 3), [200, 200, 200])) return unPeak();
+		peakXY(mouseX, mouseY)
+	}
+}
+function mouseDragged(event) {
+	console.log("mouse dragged:" + event.buttons)
+	if (stage != 1) return;
+	if (event.buttons == 3) {
+		let i = mouseX
+		let j = mouseY
+		if (isEqual(get(i, j).slice(0, 3), [200, 200, 200])) return unPeak();
+		peakXY(i, j)
+	}
+}
+function mouseReleased(event) {
+	console.log('mouse released:' + event.buttons)
+	if (stage != 1) return;
+	if (isPS) {
+		let x = mouseX;
+		let y = mouseY;
+		unPeak();
+		[x, y] = findCenter(x, y);
+		let t = m[x][y];
+		let i, j;
+		i = t.x
+		j = t.y
+		wetFloodfill(i, j)
+	}
+	isPS = false;
+}
 function PmouseClicked(event) { //function for left click
+	if (event.buttons != 0) return;
 	if (gameOver || winner) return;// Don't respond after the game is over.
 	let i = mouseX;
 	let j = mouseY;
@@ -196,7 +276,8 @@ function Lose() { //function that draw stuff when a mine is opened.
 function reload() { //function for play again button
 	window.location.reload(false);// reload the game.
 }
-function rightClick() { //function for right click
+function rightClick(event) { //function for right click
+	if (event.buttons != 2) return;
 	if (gameOver || winner) return;
 	let i = mouseX;
 	let j = mouseY;
@@ -208,6 +289,7 @@ function rightClick() { //function for right click
 	let t = m[x][y];//coordinates translation
 	i = t.x;
 	j = t.y;
+	if (opened[i][j]) return;
 	if (!flagged[i][j])
 		cnt_flag++;
 	else
@@ -224,7 +306,10 @@ class pos {
 }
 function Pdraw() { //function that is responsible for drawing while in-game.
 	//The draw() function should be override to this function when the game begun.
-	if (winner || gameOver) clearInterval(timeID);
+	if (winner || gameOver) {
+		clearInterval(timeID);
+		stage = 2;
+	}
 	if (winner) {
 		if (!alldone) wininit();// initialize the winner screen
 		alldone = true;
@@ -271,6 +356,10 @@ function Pdraw() { //function that is responsible for drawing while in-game.
 				else if (flagged[i][j])//a flagged hexagons
 				{
 					flag(X, Y);
+				}
+				else if (isPeaking[i][j]) {
+					fill('grey');
+					polygon(round(X), round(Y), hexRad, 6);
 				}
 				fill(0);
 			}

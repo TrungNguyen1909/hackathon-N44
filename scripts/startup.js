@@ -2,7 +2,7 @@ let screen = 0,
   font, input;
 let numco = ['black', 'purple', 'blue', 'cyan', 'green', 'yellow', 'orange', 'red'];
 let sz = 3;
-
+let stage = 0;
 function setup() {
   createCanvas(800, 800);
 }
@@ -108,6 +108,7 @@ function introscreen() {
   text('- Click chuột trái vào 1 ô để mở ô đó (nếu bạn ở ô chứa mìn, bạn sẽ thua!)', 255, 350);
   text('- Click chuột phải vào 1 ô để mở đánh dấu ô đó chứa mìn', 204, 370);
   text('- Click chuột trái vào 1 ô đã đánh dấu để bỏ đánh dấu ô đó', 211, 390);
+  text('- Click 2 chuột vào 1 ô đã mở và đã được đánh đủ cờ để mở các ô xung quanh không được đánh cờ', 341, 410);
   if (mouseX >= 415 && mouseX <= 485 && mouseY >= 588 && mouseY <= 613) {
     fill('yellow');
     rect(415, 588, 70, 25);
