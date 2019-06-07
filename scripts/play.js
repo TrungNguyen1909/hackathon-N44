@@ -114,6 +114,7 @@ function init() {
 	// frameRate(1)
 	arr = Array(3 * size * (size - 1) + 1) // board size;
 	number_of_mines = Math.floor(0.20*arr.length);
+    posX = canvasSize/2 - (size-1)*hexRad*Math.sqrt(3)/2, posY = canvasSize/2 - (size-1)*hexRad*1.5;
 	generate()
 	for (let i = 0; i < board.length; i++)
 		flagged[i] = new Array(board[0].length).fill(false)

@@ -37,7 +37,6 @@ function getSetting() {
   input.remove();
   if (sz >= 3 && sz <= 10) {
     size = sz;
-    posX = canvasSize/2 - (size-1)*hexRad*Math.sqrt(3)/2, posY = canvasSize/2 - (size-1)*hexRad*1.5;
     clear();
     init();
     draw = Pdraw;
