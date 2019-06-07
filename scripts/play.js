@@ -252,7 +252,7 @@ function mouseReleased(event) {
 	isPS = false;
 }
 function PmouseClicked(event) { //function for left click
-	if (event.buttons != 0) return;
+	if (event.button != 0) return;
 	if (gameOver || winner) return;// Don't respond after the game is over.
 	let i = mouseX;
 	let j = mouseY;
@@ -281,7 +281,7 @@ function reload() { //function for play again button
 	window.location.reload(false);// reload the game.
 }
 function rightClick(event) { //function for right click
-	if (event.buttons != 2) return;
+	if (event.button != 2) return;
 	if (gameOver || winner) return;
 	let i = mouseX;
 	let j = mouseY;
