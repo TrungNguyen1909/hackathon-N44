@@ -18,6 +18,7 @@ function wmouseClicked() {
 }
 function windraw() {
   fill('white');
+  text('Chiến thắng sau ' + nf(Math.floor(time / 60), 2) + ' : ' + nf(time % 60, 2), 400, 660);
   text('Click để chơi lại', 400, 700);
   colorMode(RGB);
   background(0, 25);
