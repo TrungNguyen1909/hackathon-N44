@@ -22,6 +22,7 @@ let cnt_flag = 0;
 let time = 0;
 let timeID = 0;
 let isPS = false;
+let pcx = 0, pcy = 0;
 function flag(x, y) { //function to draw a flag at (x,y)
 	noStroke();
 	fill('red');
@@ -195,11 +196,14 @@ function unPeak() {
 		[i, j] = p;
 		isPeaking[i][j] = false;
 	}
+	pcx = 0
+	pcy = 0
 }
 function peakXY(mouseX, mouseY) {
-	unPeak();
 	let x, y;
 	[x, y] = findCenter(mouseX, mouseY)
+	if (x === pcx || y === pcy) return;
+	unPeak();
 	let i, j;
 	let t = m[x][y]
 	i = t.x
@@ -209,9 +213,10 @@ function peakXY(mouseX, mouseY) {
 		peaked.push([i + di[k], j + dj[k]]);
 		isPeaking[i + di[k]][j + dj[k]] = true;
 	}
+	pcx = x;
+	pcy = y;
 }
 function mousePressed(event) {
-	console.log('mouse pressed:' + event.buttons)
 	if (stage != 1) return;
 	if (event.buttons == 3) {
 		let i = mouseX;
@@ -222,7 +227,6 @@ function mousePressed(event) {
 	}
 }
 function mouseDragged(event) {
-	console.log("mouse dragged:" + event.buttons)
 	if (stage != 1) return;
 	if (event.buttons == 3) {
 		let i = mouseX
@@ -232,7 +236,6 @@ function mouseDragged(event) {
 	}
 }
 function mouseReleased(event) {
-	console.log('mouse released:' + event.buttons)
 	if (stage != 1) return;
 	if (isPS) {
 		let x = mouseX;
