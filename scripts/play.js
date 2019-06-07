@@ -220,6 +220,7 @@ function rightClick() {
 	let i = mouseX
 	let j = mouseY
 	let cent = findCenter(i, j)
+	if (isEqual(get(i, j).slice(0, 3), [200, 200, 200])) return;
 	if (cent == undefined) return;
 	let x, y;
 	[x, y] = cent;
