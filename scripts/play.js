@@ -177,7 +177,7 @@ function findCenter(i, j) { //function to find the nearest hex center to mouse
 	}
 	return res
 }
-function mouseClicked() { //function for left click
+function PmouseClicked() { //function for left click
 	if (gameOver || winner) return// Don't respond after the game is over.
 	let i = mouseX
 	let j = mouseY
