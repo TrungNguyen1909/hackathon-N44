@@ -5,6 +5,7 @@ let sz = 3;
 let stage = 0;
 function setup() {
   createCanvas(800, 800);
+  frameRate(20)
 }
 
 function preload() {
