@@ -23,6 +23,7 @@ let time = 0;
 let timeID = 0;
 let isPS = false;
 let pcx = 0, pcy = 0;
+let mousereset = true
 function flag(x, y) { //function to draw a flag at (x,y)
 	noStroke();
 	fill('red');
@@ -220,11 +221,15 @@ function peakXY(mouseX, mouseY) {
 function mousePressed(event) {
 	if (stage != 1) return;
 	if (event.buttons == 3) {
+		mousereset = false
 		let i = mouseX;
 		let j = mouseY;
 		isPS = true;
 		if (isEqual(get(i, j).slice(0, 3), [200, 200, 200])) return unPeak();
 		peakXY(mouseX, mouseY)
+	}
+	else {
+		mousereset = true;
 	}
 }
 function mouseDragged(event) {
@@ -252,7 +257,7 @@ function mouseReleased(event) {
 	isPS = false;
 }
 function PmouseClicked(event) { //function for left click
-	if (event.button != 0) return;
+	if (event.button != 0 || isPS || !mousereset) return;
 	if (gameOver || winner) return;// Don't respond after the game is over.
 	let i = mouseX;
 	let j = mouseY;
@@ -281,7 +286,7 @@ function reload() { //function for play again button
 	window.location.reload(false);// reload the game.
 }
 function rightClick(event) { //function for right click
-	if (event.button != 2) return;
+	if (event.button != 2 || isPS) return;
 	if (gameOver || winner) return;
 	let i = mouseX;
 	let j = mouseY;
